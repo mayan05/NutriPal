@@ -2,45 +2,11 @@ import axios from 'axios';
 import { UserProfile, NutritionResponse } from '../types/index';
 
 class GraniteAPI {
-  private apiKey: string;
-  private projectId: string;
-  private modelId: string;
-  private accessToken: string | null = null;
+  private backendUrl: string;
 
   constructor() {
-    this.apiKey = process.env.REACT_APP_API_KEY || '';
-    this.projectId = process.env.REACT_APP_PROJECT_ID || '';
-    this.modelId = process.env.REACT_APP_MODEL_ID || '';
-  }
-
-  private async getAccessToken(): Promise<string> {
-    if (this.accessToken) {
-      return this.accessToken;
-    }
-
-    try {
-      const response = await axios.post(
-        'https://iam.cloud.ibm.com/identity/token',
-        new URLSearchParams({
-          'grant_type': 'urn:ibm:params:oauth:grant-type:apikey',
-          'apikey': this.apiKey
-        }),
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        }
-      );
-
-      this.accessToken = response.data.access_token;
-      if (!this.accessToken) {
-        throw new Error('No access token received');
-      }
-      return this.accessToken;
-    } catch (error) {
-      console.error('Token error:', error);
-      throw new Error('Failed to get access token');
-    }
+    // Point to your backend server
+    this.backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
   }
 
   private getSystemPrompt(): string {
@@ -83,8 +49,6 @@ Please provide personalized nutrition advice based on this profile.`;
 
   async sendMessage(userMessage: string, userProfile?: UserProfile): Promise<NutritionResponse> {
     try {
-      const accessToken = await this.getAccessToken();
-
       const messages = [
         {
           role: 'system',
@@ -94,7 +58,7 @@ Please provide personalized nutrition advice based on this profile.`;
 
       if (userProfile) {
         messages.push({
-          role: 'system',
+          role: 'system',  
           content: this.createUserContext(userProfile)
         });
       }
@@ -104,35 +68,24 @@ Please provide personalized nutrition advice based on this profile.`;
         content: userMessage
       });
 
-      // CHANGE: Use relative URL instead of full URL - proxy will handle it
+      // Call your backend instead of IBM Cloud directly
       const response = await axios.post(
-        `/ml/v1/text/chat?version=2023-05-29`,
+        `${this.backendUrl}/api/chat`,
         {
-          model_id: this.modelId,
-          project_id: this.projectId,
-          parameters: {
-            temperature: 0.7,
-            max_new_tokens: 800,
-            top_p: 0.9
-          },
-          messages
+          messages,
+          userProfile
         },
         {
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
           }
         }
       );
 
-      return {
-        content: response.data.choices[0].message.content,
-        success: true
-      };
+      return response.data;
 
     } catch (error: any) {
-      console.error('Granite API Error:', error);
+      console.error('Backend API Error:', error);
       return {
         content: 'Sorry, I encountered an error. Please try again.',
         success: false,

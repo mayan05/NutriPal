@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { ChatMessage, UserProfile } from '../types/index';
 import { granite } from '../services/granite';
 
@@ -102,7 +103,27 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ userProfile, onEditProfil
           <div key={message.id} className={`message ${message.role}`}>
             <div className="message-content">
               <div className="message-text">
-                {message.content}
+                {message.role === 'assistant' ? (
+                  <ReactMarkdown
+                    components={{
+                      // Custom styling for markdown components
+                      h1: ({children}) => <h1 style={{fontSize: '1.5em', fontWeight: 'bold', marginBottom: '0.5em'}}>{children}</h1>,
+                      h2: ({children}) => <h2 style={{fontSize: '1.3em', fontWeight: 'bold', marginBottom: '0.4em'}}>{children}</h2>,
+                      h3: ({children}) => <h3 style={{fontSize: '1.1em', fontWeight: 'bold', marginBottom: '0.3em'}}>{children}</h3>,
+                      strong: ({children}) => <strong style={{fontWeight: 'bold', color: '#2563eb'}}>{children}</strong>,
+                      p: ({children}) => <p style={{marginBottom: '0.8em', lineHeight: '1.5'}}>{children}</p>,
+                      ul: ({children}) => <ul style={{marginLeft: '1.2em', marginBottom: '0.8em'}}>{children}</ul>,
+                      ol: ({children}) => <ol style={{marginLeft: '1.2em', marginBottom: '0.8em'}}>{children}</ol>,
+                      li: ({children}) => <li style={{marginBottom: '0.4em', lineHeight: '1.4'}}>{children}</li>,
+                      code: ({children}) => <code style={{backgroundColor: '#f3f4f6', padding: '0.2em 0.4em', borderRadius: '3px', fontSize: '0.9em'}}>{children}</code>,
+                      blockquote: ({children}) => <blockquote style={{borderLeft: '4px solid #e5e7eb', paddingLeft: '1em', margin: '0.8em 0', fontStyle: 'italic'}}>{children}</blockquote>
+                    }}
+                  >
+                    {message.content}
+                  </ReactMarkdown>
+                ) : (
+                  message.content
+                )}
               </div>
               <div className="message-time">
                 {message.timestamp.toLocaleTimeString([], { 

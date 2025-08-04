@@ -26,7 +26,7 @@ async function getAccessToken() {
       'https://iam.cloud.ibm.com/identity/token',
       new URLSearchParams({
         'grant_type': 'urn:ibm:params:oauth:grant-type:apikey',
-        'apikey': process.env.IBM_API_KEY
+        'apikey': process.env.API_KEY  // FIXED: Changed from IBM_API_KEY
       }),
       {
         headers: {
@@ -53,10 +53,10 @@ app.post('/api/chat', async (req, res) => {
     const token = await getAccessToken();
 
     const response = await axios.post(
-      `${process.env.IBM_URL}/ml/v1/text/chat?version=2023-05-29`,
+      `${process.env.URL}/ml/v1/text/chat?version=2023-05-29`,  // FIXED: Changed from IBM_URL
       {
-        model_id: process.env.IBM_MODEL_ID,
-        project_id: process.env.IBM_PROJECT_ID,
+        model_id: process.env.MODEL_ID,      // FIXED: Changed from IBM_MODEL_ID
+        project_id: process.env.PROJECT_ID,  // FIXED: Changed from IBM_PROJECT_ID
         parameters: {
           temperature: 0.7,
           max_new_tokens: 800,
