@@ -3,14 +3,12 @@ import { UserProfile, NutritionResponse } from '../types/index';
 
 class GraniteAPI {
   private apiKey: string;
-  private url: string;
   private projectId: string;
   private modelId: string;
   private accessToken: string | null = null;
 
   constructor() {
     this.apiKey = process.env.REACT_APP_API_KEY || '';
-    this.url = process.env.REACT_APP_URL || '';
     this.projectId = process.env.REACT_APP_PROJECT_ID || '';
     this.modelId = process.env.REACT_APP_MODEL_ID || '';
   }
@@ -106,8 +104,9 @@ Please provide personalized nutrition advice based on this profile.`;
         content: userMessage
       });
 
+      // CHANGE: Use relative URL instead of full URL - proxy will handle it
       const response = await axios.post(
-        `${this.url}/ml/v1/text/chat?version=2023-05-29`,
+        `/ml/v1/text/chat?version=2023-05-29`,
         {
           model_id: this.modelId,
           project_id: this.projectId,

@@ -8,7 +8,7 @@ interface UserProfileProps {
 const UserProfileComponent: React.FC<UserProfileProps> = ({ onProfileComplete }) => {
   const [profile, setProfile] = useState<UserProfile>({
     name: '',
-    age: 25,
+    age: 18,
     gender: 'male',
     location: '',
     height: 170,
