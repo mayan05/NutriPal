@@ -275,12 +275,6 @@ const MealPlan: React.FC<MealPlanProps> = ({ userProfile, onBack }) => {
       </div>
 
       <div className="date-selector">
-        <label>Select Date:</label>
-        <input
-          type="date"
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-        />
         <button onClick={generateMealPlan} disabled={isLoading} className="generate-btn">
           {isLoading ? 'Generating...' : 'Generate Meal Plan'}
         </button>
