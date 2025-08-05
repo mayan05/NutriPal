@@ -14,74 +14,29 @@ A smart, personalized nutrition assistant powered by IBM Granite AI that provide
 ## Technology Stack
 
 - **Frontend**: React 18 with TypeScript
+- **Backend**: Node.js with Express
 - **AI Model**: IBM Granite (via IBM Watson Machine Learning)
 - **Styling**: Custom CSS with modern design
 - **HTTP Client**: Axios for API communication
 
-## Setup Instructions
+## Live Demo
 
-### Prerequisites
+Check out the live application:
+- Frontend: https://nutri-pal-one.vercel.app/
+- Backend API: https://nutripal-bqg1.onrender.com
 
-1. IBM Cloud account with Watson Machine Learning service
-2. Node.js (v16 or higher)
-3. npm or yarn package manager
+## Deployment
 
-### Installation
+### Backend
+The backend is deployed on Render's free tier service:
+- The Express server handles API requests and communicates with IBM Watson services
+- Environment variables are configured on Render for IBM API credentials
 
-1. Clone the repository:
-```bash
-git clone <your-repo-url>
-cd nutripal-ai-assistant
-```
+### Frontend
+The React frontend is deployed on Vercel:
+- Connected to the GitHub repository for continuous deployment
+- Environment variables configured to point to the Render backend
 
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Set up environment variables:
-   - Copy `.env.example` to `.env`
-   - Fill in your IBM credentials:
-```bash
-REACT_APP_API_KEY=your_ibm_api_key_here
-REACT_APP_URL=https://us-south.ml.cloud.ibm.com
-REACT_APP_PROJECT_ID=your_project_id_here
-REACT_APP_MODEL_ID=ibm/granite-13b-chat-v2
-```
-
-4. Start the development server:
-```bash
-npm start
-```
-
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## Getting IBM Credentials
-
-### Step 1: Create IBM Cloud Account
-1. Go to [IBM Cloud](https://cloud.ibm.com)
-2. Sign up for a free account
-
-### Step 2: Create Watson Machine Learning Service
-1. From IBM Cloud dashboard, click "Create resource"
-2. Search for "Watson Machine Learning"
-3. Select the Lite plan (free)
-4. Create the service
-
-### Step 3: Get API Key
-1. Go to IBM Cloud dashboard → Resource list
-2. Find your Watson ML service
-3. Click on it → Service credentials
-4. Create new credentials if none exist
-5. Copy the `apikey` value
-
-### Step 4: Create Project and Deploy Model
-1. Go to [IBM Watson Studio](https://dataplatform.cloud.ibm.com)
-2. Create a new project
-3. Go to Assets → Foundation models
-4. Select IBM Granite model
-5. Deploy the model
-6. Copy the project ID from project settings
 
 ## Project Structure
 
@@ -134,18 +89,13 @@ src/
 2. Create a feature branch
 3. Make your changes
 4. Test thoroughly
-5. Submit a pull request
+5. Submit the PR
 
 ## License
 
 This project is licensed under the MIT License.
 
-## Support
-
-For support, please create an issue in the GitHub repository or contact the development team.
-
 ## Acknowledgments
 
 - IBM Watson Machine Learning for AI capabilities
 - IBM Granite model for natural language processing
-- React community for excellent documentation and tools
